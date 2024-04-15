@@ -24,7 +24,7 @@ class Guide
     /**
      * @var Collection<int, Step>
      */
-    #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'data')]
+    #[ORM\OneToMany(targetEntity: Data::class, mappedBy: 'data')]
     private Collection $data;
 
     public function __construct()
@@ -68,7 +68,10 @@ class Guide
     {
         return $this->data;
     }
-
+    public function getDataByIdx(int $idx): Collection
+    {
+        return $this->data->first(); //for now ok
+    }
     /**
      * addData is to handle multi-request
      *
