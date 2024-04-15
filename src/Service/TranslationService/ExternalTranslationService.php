@@ -16,28 +16,31 @@ class ExternalTranslationService implements TranslationService
     const FIELD_STEPS = "steps";
     private ServiceEntityRepository $entityManager;
 
+    private array $dictionary;
     /**
      * @param ServiceEntityRepository $entityManager
      */
     public function __construct(GuideRepository $entityManager)
     {
         $this->entityManager = $entityManager;
+
+        $this->dictionary = [
+            'en_US_it_IT'=>[
+                "A nice guide" => "Una bella guida",
+                "some content"=>"del contenuto",
+                "some other content"=>"dell'altro contenuto"
+            ],
+        ];
     }
 
     /**
-     * @param Guide $key
-     * @return Guide
+     * @param string $key
+     * @return string
      */
-    public function translate(Guide $key): Guide
+    public function translate($sourceLocale, $targetLocale, $key): string
     {
-        $this->translateData($key[self::FIELD_DATA]);
-        return $key;
-    }
-
-    private function translateData(array $data)
-    {
-        foreach ($data[self::FIELD_STEPS] as $val) {
-
-        }
+        $dictKey = isset($this->dictionary[$sourceLocale."_".$targetLocale]);
+        $val = $dictKey && isset($this->dictionary[$sourceLocale."_".$targetLocale][$key]) ? $this->dictionary[$sourceLocale."_".$targetLocale][$key] : null;
+        return $val;
     }
 }

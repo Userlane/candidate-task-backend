@@ -15,7 +15,7 @@ class Data
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 4)]
+    #[ORM\Column(length: 255)]
     private ?string $title = null;
 
     /**
