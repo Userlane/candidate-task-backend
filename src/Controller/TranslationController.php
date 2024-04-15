@@ -23,18 +23,23 @@ class TranslationController extends AbstractController
         $this->translationService = $translationService;
     }
 
-    #[Route('/auto-translate/{id}', name: 'translation_index', methods:['get'] )]
-    public function index(ManagerRegistry $doctrine, int $id): JsonResponse
+    #[Route('/auto-translate/{original_language}/{language}/{data}', name: 'translation_index', methods:['get'] )]
+    public function index(ManagerRegistry $doctrine, string $original_language, string $language, string $data): JsonResponse
     {
-        $entity = $doctrine->getRepository(Guide::class)->find($id);
+        $guide = new Guide();
+        $guide->setOriginalLanguage($original_language);
+        $guide->setLanguage($language);
 
-        if (!$entity) {
-            return $this->json('No guide found for id ' . $id, 404);
-        }
+        $this->translationService->translate($guide);
+        $entity = $doctrine->getRepository(Guide::class)->find();
+
+//        if (!$entity) {
+//            return $this->json('No guide found for id ' . $id, 404);
+//        }
 
         $data =  [
             'id' => $entity->getId(),
-            'name' => $entity->getName(),
+            'original_language' => $entity->getName(),
             'description' => $entity->getDescription(),
         ];
 
