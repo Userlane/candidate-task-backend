@@ -62,14 +62,20 @@ class Guide
     }
 
     /**
-     * @return Collection<int, Step>
+     * @return Collection<int, Data>
      */
     public function getData(): Collection
     {
         return $this->data;
     }
 
-    public function addData(Step $data): static
+    /**
+     * addData is to handle multi-request
+     *
+     * @param Data $data
+     * @return $this
+     */
+    public function addData(Data $data): static
     {
         if (!$this->data->contains($data)) {
             $this->data->add($data);
@@ -79,7 +85,7 @@ class Guide
         return $this;
     }
 
-    public function removeData(Step $data): static
+    public function removeData(Data $data): static
     {
         if ($this->data->removeElement($data)) {
             // set the owning side to null (unless already changed)

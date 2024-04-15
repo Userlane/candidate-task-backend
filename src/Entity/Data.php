@@ -18,9 +18,6 @@ class Data
     #[ORM\Column(length: 4)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 4)]
-    private ?string $language = null;
-
     /**
      * @var Collection<int, Step>
      */
@@ -43,5 +40,15 @@ class Data
     public function getSteps(): Collection
     {
         return $this->steps;
+    }
+
+    public function addStep(Step $data): static
+    {
+        if (!$this->steps->contains($data)) {
+            $this->steps->add($data);
+            $data->setData($this);
+        }
+
+        return $this;
     }
 }
