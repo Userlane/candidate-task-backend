@@ -2,6 +2,7 @@
 
 namespace App\Service\TranslationService;
 
+use App\Entity\Data;
 use App\Entity\Guide;
 use App\Repository\GuideRepository;
 use App\Service\TranslationService;
@@ -52,8 +53,12 @@ class ExternalTranslationService implements TranslationService
         $guideTranslated->setOriginalLanguage($sourceLocale);
         $guideTranslated->setLanguage($targetLocale);
 
+        /**
+         * @var Data $data
+         */
         $data = $guide->getData();
-//        $data->
+        $data->getSteps();
+
         return $guideTranslated;
     }
 }
