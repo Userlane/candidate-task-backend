@@ -37,10 +37,23 @@ class ExternalTranslationService implements TranslationService
      * @param string $key
      * @return string
      */
-    public function translate($sourceLocale, $targetLocale, $key): ?string
+    public function translateKey($sourceLocale, $targetLocale, $key): ?string
     {
-        $dictKey = isset($this->dictionary[$sourceLocale."_".$targetLocale]);
-        $val = $dictKey && isset($this->dictionary[$sourceLocale."_".$targetLocale][$key]) ? $this->dictionary[$sourceLocale."_".$targetLocale][$key] : null;
+        $locale = $sourceLocale."_".$targetLocale;
+        $dictKey = isset($this->dictionary[$locale]);
+        $val = $dictKey && isset($this->dictionary[$locale][$key]) ? $this->dictionary[$locale][$key] : null;
         return $val;
+    }
+    public function translate(Guide $guide): Guide
+    {
+        $sourceLocale = $guide->setOriginalLanguage();
+        $targetLocale = $guide->getLanguage();
+        $guideTranslated = new Guide();
+        $guideTranslated->setOriginalLanguage($sourceLocale);
+        $guideTranslated->setLanguage($targetLocale);
+
+        $data = $guide->getData();
+//        $data->
+        return $guideTranslated;
     }
 }

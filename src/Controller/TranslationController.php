@@ -32,16 +32,14 @@ class TranslationController extends AbstractController
 
         $entity = $doctrine->getRepository(Guide::class)->find();
 
-        $this->translationService->translate($guide);
+        $guideTranslated = $this->translationService->translate($guide);
 //        if (!$entity) {
 //            return $this->json('No guide found for id ' . $id, 404);
 //        }
 
         $data =  [
 //            'id' => $entity->getId(),
-            'original_language' => $guide->getOriginalLanguage(),
-            'language' => $guide->getLanguage(),
-            'data' => $guide->getData(),
+            $guideTranslated
         ];
 
         return $this->json($data);

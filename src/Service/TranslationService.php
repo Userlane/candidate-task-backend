@@ -9,5 +9,6 @@ use App\Entity\Guide;
  */
 interface TranslationService
 {
-    public function translate($sourceLocale, $targetLocale, $key): ?string;
+    public function translateKey($sourceLocale, $targetLocale, $key): ?string;
+    public function translate(Guide $guide): Guide;
 }
