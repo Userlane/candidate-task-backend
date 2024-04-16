@@ -18,7 +18,7 @@ class TranslationController extends AbstractController
     /**
      * @param TranslationService $translationService
      */
-    public function __construct(TranslationService $translationService)
+    public function __construct(ExternalTranslationService $translationService)
     {
         $this->translationService = $translationService;
     }

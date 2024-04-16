@@ -16,6 +16,7 @@ class ExternalTranslationService implements TranslationService
 {
     const FIELD_DATA = "data";
     const FIELD_STEPS = "steps";
+    const SEPARATOR = "_";
     private ServiceEntityRepository $entityManager;
 
     private array $dictionary;
@@ -41,7 +42,7 @@ class ExternalTranslationService implements TranslationService
      */
     public function translateKey($sourceLocale, $targetLocale, $key): ?string
     {
-        $locale = $sourceLocale."_".$targetLocale;
+        $locale = $sourceLocale. self::SEPARATOR .$targetLocale;
         $dictKey = isset($this->dictionary[$locale]);
         $val = $dictKey && isset($this->dictionary[$locale][$key]) ? $this->dictionary[$locale][$key] : null;
         return $val;
