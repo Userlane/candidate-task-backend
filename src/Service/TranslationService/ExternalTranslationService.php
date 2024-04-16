@@ -4,6 +4,7 @@ namespace App\Service\TranslationService;
 
 use App\Entity\Data;
 use App\Entity\Guide;
+use App\Entity\Step;
 use App\Repository\GuideRepository;
 use App\Service\TranslationService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -53,11 +54,31 @@ class ExternalTranslationService implements TranslationService
         $guideTranslated->setOriginalLanguage($sourceLocale);
         $guideTranslated->setLanguage($targetLocale);
 
+        $dataTranslated = new Data();
         /**
          * @var Data $data
          */
         $data = $guide->getData();
-        $data->getSteps();
+        $value  =  $this->translateKey($sourceLocale, $targetLocale, $data->getTitle());
+        $dataTranslated->setTitle($value);
+        /**
+         * @var Step[] $steps
+         */
+        $steps = $data->getSteps();
+
+        /**
+         * @var Step $step
+         */
+        foreach ($steps as $step) {
+            $stepTranslated = new Step();
+            $value  =  $this->translateKey($sourceLocale, $targetLocale, $step->getTitle());
+            $stepTranslated->setTitle($value);
+            $value  =  $this->translateKey($sourceLocale, $targetLocale, $step->getContent());
+            $stepTranslated->setContent($value);
+            $dataTranslated->addStep($stepTranslated);
+        }
+
+        $guideTranslated->addData($dataTranslated);
 
         return $guideTranslated;
     }
