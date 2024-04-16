@@ -37,7 +37,7 @@ class ExternalTranslationService implements TranslationService
      * @param string $key
      * @return string
      */
-    public function translate($sourceLocale, $targetLocale, $key): string
+    public function translate($sourceLocale, $targetLocale, $key): ?string
     {
         $dictKey = isset($this->dictionary[$sourceLocale."_".$targetLocale]);
         $val = $dictKey && isset($this->dictionary[$sourceLocale."_".$targetLocale][$key]) ? $this->dictionary[$sourceLocale."_".$targetLocale][$key] : null;
