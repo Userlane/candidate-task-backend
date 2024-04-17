@@ -68,10 +68,6 @@ class Guide
     {
         return $this->data;
     }
-    public function getDataByIdx(int $idx): Collection
-    {
-        return $this->data->first(); //for now ok
-    }
     /**
      * addData is to handle multi-request
      *
@@ -82,7 +78,6 @@ class Guide
     {
         if (!$this->data->contains($data)) {
             $this->data->add($data);
-            $data->setData($this);
         }
 
         return $this;

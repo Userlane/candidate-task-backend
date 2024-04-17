@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Data;
 use App\Entity\Guide;
+use App\Entity\Step;
 use App\Service\TranslationService;
 use App\Service\TranslationService\ExternalTranslationService;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,24 +28,41 @@ class TranslationController extends AbstractController
     }
 
     #[Route('/auto-translate/{original_language}/{language}/{data}', name: 'translation_index', methods:['get'] )]
-    public function index(ManagerRegistry $doctrine, string $original_language, string $language, string $data): JsonResponse
+    public function index(/*ManagerRegistry $doctrine, */string $original_language, string $language, string $data, SerializerInterface $serializer): JsonResponse
     {
         $guide = new Guide();
         $guide->setOriginalLanguage($original_language);
         $guide->setLanguage($language);
+        $dataJsonDecode = json_decode($data, true);
+//        var_dump($dataJsonDecode);
+        $stepsDeserialized = $serializer->deserialize(json_encode($dataJsonDecode['steps']), 'App\Entity\Step[]', 'json');
+//        var_dump($stepsDeserialized);
 
-        $entity = $doctrine->getRepository(Guide::class)->find();
+        $dataDeserialized = $serializer->deserialize($data, Data::class, 'json');
+//        var_dump($dataDeserialized);
+        foreach ($stepsDeserialized as $step) {
+            $dataDeserialized->addStep($step);
+        }
+        $guide->addData($dataDeserialized);
+
+//        $entity = $doctrine->getRepository(Guide::class)->find();
 
         $guideTranslated = $this->translationService->translate($guide);
 //        if (!$entity) {
 //            return $this->json('No guide found for id ' . $id, 404);
 //        }
 
-        $data =  [
+        $out =  [
 //            'id' => $entity->getId(),
             $guideTranslated
         ];
 
-        return $this->json($data);
+        return $this->json($out);
     }
+    #[Route('/test', name: 'test', methods:['get'] )]
+    public function test(): JsonResponse
+    {
+        return $this->json("X");
+    }
+
 }

@@ -20,8 +20,6 @@ class Step
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    #[ORM\ManyToOne(inversedBy: 'data')]
-    private ?Guide $data = null;
 
     public function getId(): ?int
     {
@@ -33,7 +31,7 @@ class Step
         return $this->title;
     }
 
-    public function setTitle(string $title): static
+    public function setTitle(?string $title): static
     {
         $this->title = $title;
 
@@ -45,21 +43,9 @@ class Step
         return $this->content;
     }
 
-    public function setContent(string $content): static
+    public function setContent(?string $content): static
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    public function getData(): ?Guide
-    {
-        return $this->data;
-    }
-
-    public function setData(?Guide $data): static
-    {
-        $this->data = $data;
 
         return $this;
     }

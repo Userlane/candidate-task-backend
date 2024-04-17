@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: GuideRepository::class)]
+#[ORM\Entity(repositoryClass: Data::class)]
 class Data
 {
     #[ORM\Id]
@@ -21,7 +21,7 @@ class Data
     /**
      * @var Collection<int, Step>
      */
-    #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'data')]
+    #[ORM\OneToMany(targetEntity: Step::class, mappedBy: 'steps')]
     private Collection $steps;
 
     public function __construct()
@@ -46,7 +46,6 @@ class Data
     {
         if (!$this->steps->contains($data)) {
             $this->steps->add($data);
-            $data->setData($this);
         }
 
         return $this;

@@ -31,7 +31,9 @@ class ExternalTranslationService implements TranslationService
             'en_US_it_IT'=>[
                 "A nice guide" => "Una bella guida",
                 "some content"=>"del contenuto",
-                "some other content"=>"dell'altro contenuto"
+                "some other content"=>"dell'altro contenuto",
+                "step 1" => "paso 1",
+                "step 2" => "paso 2",
             ],
         ];
     }
@@ -49,7 +51,7 @@ class ExternalTranslationService implements TranslationService
     }
     public function translate(Guide $guide): Guide
     {
-        $sourceLocale = $guide->setOriginalLanguage();
+        $sourceLocale = $guide->getOriginalLanguage();
         $targetLocale = $guide->getLanguage();
         $guideTranslated = new Guide();
         $guideTranslated->setOriginalLanguage($sourceLocale);
@@ -59,7 +61,7 @@ class ExternalTranslationService implements TranslationService
         /**
          * @var Data $data
          */
-        $data = $guide->getData();
+        $data = $guide->getData()->first();
         $value  =  $this->translateKey($sourceLocale, $targetLocale, $data->getTitle());
         $dataTranslated->setTitle($value);
         /**
