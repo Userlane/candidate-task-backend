@@ -29,7 +29,7 @@ The body is a JSON object with the following fields:
 * `original_language`: the language of the passed text
 * `language`: the language to translate into
 * `data`: a JSON object representing the content to be translated.
-  it can have any structure, and the service will only translate the content of the fields but not the names.
+  It can have any structure, and the service will only translate the content of the fields but not the names.
 
 An example of request body:
 ```
